@@ -26,6 +26,12 @@ namespace JobManagerAPI.Controllers
         {
             return await _context.TblUsers_1.ToListAsync();
         }
+        // GET: api/TblUsers
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TblUsers>>> GetTblUsers()
+        {
+            return await _context.TblUsers_1.ToListAsync();
+        }
 
         // GET: api/TblUsers/5
         [HttpGet("{id}")]
