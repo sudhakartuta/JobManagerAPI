@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "JobManagerDB": "Server=DESKTOP-HEEIV1D;Database=JobManager;Trusted_Connection=True;"
+  }
+}

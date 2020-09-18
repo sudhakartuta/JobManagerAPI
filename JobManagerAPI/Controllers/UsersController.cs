@@ -11,54 +11,48 @@ namespace JobManagerAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TblUsersController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly JobManagerContext _context;
 
-        public TblUsersController(JobManagerContext context)
+        public UsersController(JobManagerContext context)
         {
             _context = context;
         }
 
-        // GET: api/TblUsers
+        // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TblUsers>>> GetTblUsers_1()
+        public async Task<ActionResult<IEnumerable<TblUser>>> GetTblUsers()
         {
-            return await _context.TblUsers_1.ToListAsync();
-        }
-        // GET: api/TblUsers
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TblUsers>>> GetTblUsers()
-        {
-            return await _context.TblUsers_1.ToListAsync();
+            return await _context.TblUsers.ToListAsync();
         }
 
-        // GET: api/TblUsers/5
+        // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TblUsers>> GetTblUsers(int id)
+        public async Task<ActionResult<TblUser>> GetTblUser(int id)
         {
-            var tblUsers = await _context.TblUsers_1.FindAsync(id);
+            var tblUser = await _context.TblUsers.FindAsync(id);
 
-            if (tblUsers == null)
+            if (tblUser == null)
             {
                 return NotFound();
             }
 
-            return tblUsers;
+            return tblUser;
         }
 
-        // PUT: api/TblUsers/5
+        // PUT: api/Users/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTblUsers(int id, TblUsers tblUsers)
+        public async Task<IActionResult> PutTblUser(int id, TblUser tblUser)
         {
-            if (id != tblUsers.Id)
+            if (id != tblUser.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(tblUsers).State = EntityState.Modified;
+            _context.Entry(tblUser).State = EntityState.Modified;
 
             try
             {
@@ -66,7 +60,7 @@ namespace JobManagerAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TblUsersExists(id))
+                if (!TblUserExists(id))
                 {
                     return NotFound();
                 }
@@ -79,37 +73,37 @@ namespace JobManagerAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/TblUsers
+        // POST: api/Users
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<TblUsers>> PostTblUsers(TblUsers tblUsers)
+        public async Task<ActionResult<TblUser>> PostTblUser(TblUser tblUser)
         {
-            _context.TblUsers_1.Add(tblUsers);
+            _context.TblUsers.Add(tblUser);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTblUsers", new { id = tblUsers.Id }, tblUsers);
+            return CreatedAtAction("GetTblUser", new { id = tblUser.Id }, tblUser);
         }
 
-        // DELETE: api/TblUsers/5
+        // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TblUsers>> DeleteTblUsers(int id)
+        public async Task<ActionResult<TblUser>> DeleteTblUser(int id)
         {
-            var tblUsers = await _context.TblUsers_1.FindAsync(id);
-            if (tblUsers == null)
+            var tblUser = await _context.TblUsers.FindAsync(id);
+            if (tblUser == null)
             {
                 return NotFound();
             }
 
-            _context.TblUsers_1.Remove(tblUsers);
+            _context.TblUsers.Remove(tblUser);
             await _context.SaveChangesAsync();
 
-            return tblUsers;
+            return tblUser;
         }
 
-        private bool TblUsersExists(int id)
+        private bool TblUserExists(int id)
         {
-            return _context.TblUsers_1.Any(e => e.Id == id);
+            return _context.TblUsers.Any(e => e.Id == id);
         }
     }
 }

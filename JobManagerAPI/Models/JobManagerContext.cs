@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using JobManagerAPI.Models;
 
 namespace JobManagerAPI.Models
 {
@@ -1166,7 +1165,5 @@ namespace JobManagerAPI.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-        public DbSet<JobManagerAPI.Models.TblUsers> TblUsers_1 { get; set; }
     }
 }
