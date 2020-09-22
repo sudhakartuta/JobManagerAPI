@@ -37,8 +37,6 @@ namespace JobManagerAPI.Controllers
         public async Task<ActionResult<IEnumerable<Material>>> GetMaterial(string MaterialType)
         {
             return await _context.TblMaterials.Where(r => r.MaterialType == MaterialType).Select(a => new Material { Code = a.Code, MaterialName = a.Material }).ToListAsync();
-                                                               
-                                                            
         }
 
         // GET: api/Materials/5
