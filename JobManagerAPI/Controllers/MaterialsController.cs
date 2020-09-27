@@ -26,6 +26,7 @@ namespace JobManagerAPI.Controllers
         {
             return await _context.TblMaterials.ToListAsync();
         }
+        
 
         [HttpGet("MaterialType")]
         public async Task<ActionResult<IEnumerable<string>>> GetMaterialType()
