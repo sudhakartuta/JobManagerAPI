@@ -11,6 +11,7 @@ namespace JobManagerAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+   
     public class MaterialsController : ControllerBase
     {
         private readonly JobManagerContext _context;

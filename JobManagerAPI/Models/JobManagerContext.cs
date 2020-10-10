@@ -1119,19 +1119,25 @@ namespace JobManagerAPI.Models
 
                 entity.Property(e => e.AccessLevel)
                     .HasColumnName("accessLevel")
-                    .HasMaxLength(255);
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Email)
+                    .HasColumnName("email")
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.Password)
                     .HasColumnName("password")
-                    .HasMaxLength(255);
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Token).HasMaxLength(50);
 
                 entity.Property(e => e.UserId)
                     .HasColumnName("userID")
-                    .HasMaxLength(255);
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.UserName)
                     .HasColumnName("userName")
-                    .HasMaxLength(255);
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<TblWestage>(entity =>

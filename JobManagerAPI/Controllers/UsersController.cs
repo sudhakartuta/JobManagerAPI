@@ -6,18 +6,27 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JobManagerAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using Microsoft.Extensions.Options;
+using JobManagerAPI.Helpers;
 
 namespace JobManagerAPI.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
         private readonly JobManagerContext _context;
-
-        public UsersController(JobManagerContext context)
+        private readonly AppSettings _appSettings;
+        public UsersController(JobManagerContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
+            _appSettings = appSettings.Value;
         }
 
         // GET: api/Users
@@ -28,15 +37,42 @@ namespace JobManagerAPI.Controllers
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TblUser>> GetTblUser(int id)
+        [HttpGet("{userid}/{password}")]
+        public async Task<ActionResult<TblUser>> GetTblUser(string userid,string password)
         {
-            var tblUser = await _context.TblUsers.FindAsync(id);
+            var tblUser = await _context.TblUsers.Where(r=>r.UserId== userid && r.Password==password).SingleOrDefaultAsync();
 
             if (tblUser == null)
             {
                 return NotFound();
             }
+
+            return tblUser;
+        }
+
+       
+        [HttpPost("Login")]
+        public async Task<ActionResult<TblUser>> Login([FromBody] TblUser user)
+        {
+            var tblUser = await _context.TblUsers.Where(r => r.UserId == user.UserId && r.Password == user.Password).SingleOrDefaultAsync();
+            if (tblUser == null)
+                return null;
+
+            // authentication successful so generate jwt token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, tblUser.UserId.ToString()),
+                    new Claim(ClaimTypes.Role, tblUser.AccessLevel)
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            tblUser.Token = tokenHandler.WriteToken(token);
 
             return tblUser;
         }
