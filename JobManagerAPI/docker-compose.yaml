@@ -9,7 +9,7 @@ services:
     depends_on:
       - db
     volumes:
-      - myapplication:/App
+      - myapplication:/app
 
   db:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
@@ -20,9 +20,10 @@ services:
     ports: 
       - "1433:1433"
     volumes: 
-      - mystorage:/var/opt/mssql
+      - jobmanagerapi_mystorage:/var/opt/mssql
 
 volumes:
-  mystorage:
+  jobmanagerapi_mystorage:
+    external: true
   myapplication:
 
